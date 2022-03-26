@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<HTML>
+<head>
+	<meta charset="UTF-8">
+	<title>Конвертер кода в MathJax</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+
+    <link rel="stylesheet" src="style.css"/>
+    <script src="src/extensions.js"></script>
+    <script src="src/global.js"></script>
+    <script src="src/DefinedValues.js"></script>
+    <script src="src/help.js"></script>
+    <script src="src/ServiceSymbols.js"></script>
+    <script src="src/Palette.js"></script>
+    <script src="src/MathJaxConverter.js"></script>
+    <script src="src/main.js"></script>
+</head>
+
+<body>
+    <div style="display: grid; grid-template-columns: 1fr auto; grid-gap: 5px;">
+        <div style="display: grid; grid-template-rows: 0fr 0fr 1fr; grid-gap: 10px;">
+            <div style="display: grid; grid-template-columns: repeat(6, auto) 1fr; grid-gap: 10px;">
+                <button onclick="showHelp();">Справка</button>
+                <button onclick="MathJaxConverter.render();">Сконвертировать</button>
+                <label><input id="autoRenderCheckBox" type="checkbox" checked>Авто-конвертация</label>
+                <button id="copyMathjaxCodeButton" onclick="MathJaxConverter.copyCodeToClipboard();">Скопировать код MathJax</button>
+                <label><input id="inlineMathJaxCodeCheckBox" type="checkbox">Однострочный код MathJax</label>
+                <label><input id="copyHtmlCodeCheckBox" type="checkbox">Копировать код HTML таблицы</label>
+                <div></div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, auto) 1fr auto; grid-gap: 10px;">
+                <button id="switchBetweenSourceAndKeywordEditorsButton">Редактор зарезервированных слов</button>
+                <button id="directConvertingButton">Режим прямого преобразования кода</button>
+                <div id="directEditorOptions" style="display: grid; grid-template-columns: repeat(3, auto) 1fr auto; grid-gap: 10px;  margin-top: 2px;">
+                    <label><input id="useSmallCommandCheckBox" type="checkbox" onchange="MathJaxConverter.render();" checked>Добавить команду small</label>
+                    <label><input id="monospaceFontCheckBox" type="checkbox" onchange="MathJaxConverter.render();" checked>Моноширинный шрифт</label>
+                    <label><input id="lineNumbersCheckBox" type="checkbox" onchange="MathJaxConverter.render();" checked>Нумерация строк</label>
+                    
+                </div>
+                <div></div>
+                <label style="margin-top: 2px; margin-right:5px"><input id="enablePaletteCheckBox" type="checkbox" onchange="Palette.toggle()" checked>Форматирование</label>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr auto; grid-gap: 5px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 5px;">
+                    <div style="display: grid; grid-template-rows: 0fr 1fr auto;">
+                        <textarea id="sourceCodeEditor" type="text" style="display: block; border: solid 1px black; height: 500px;"></textarea>
+                        <div id="keywordsEditor" style="display: none; grid-template-rows: 0fr 1fr">
+                            <div style="text-align: center; margin-top: -5px; border-top: solid 0px black; border-bottom: solid 1px black;">Вводите слова по одному в строке, запись в словарь происходит после нажатия Enter</div>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); grid-gap: 3px; height: 492px;">
+                                <div style="display: grid; grid-template-rows: 0fr 1fr;">
+                                    <div style="text-align: center;">Ключевые слова</div>
+                                    <textarea id="keywordsListEditor" type="text" style="vertical-align: top; border: solid 1px black;"></textarea>
+                                </div>
+                
+                                <div style="display: grid; grid-template-rows: 0fr 1fr;">
+                                    <div style="text-align: center;">Типы</div>
+                                    <textarea id="typesListEditor" type="text" style="vertical-align: top; border: solid 1px black;"></textarea>
+                                </div>
+                
+                                <div style="display: grid; grid-template-rows: 0fr 1fr;">
+                                    <div style="text-align: center;">Функции</div>
+                                    <textarea id="functionsListEditor" type="text" style="vertical-align: top; border: solid 1px black;"></textarea>
+                                </div>
+                
+                                <div style="display: grid; grid-template-rows: 0fr 1fr;">
+                                    <div style="text-align: center;">Переменные</div>
+                                    <textarea id="variablesListEditor" type="text" style="vertical-align: top; border: solid 1px black;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-rows: auto 1fr; grid-gap: 10px;">
+                        <div id="mathjaxPreviewContainer" style="border: solid 1px black; padding: 3px; vertical-align: top; height: 498px; overflow-x: scroll;">
+                            <div id="mathjaxPreview" type="text" style="vertical-align: top;"></div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div style="display: grid; grid-template-rows: repeat(4, auto) 1fr; grid-gap: 5px; margin: 1px;">
+                    <div><div id="palette" style="display: grid; align-items: flex-start;"></div></div>
+                    <button id="copyPaletteColorsButton" onclick="Palette.copyColorsToClipboard();">Скопировать</button>
+                    <button onclick="window.open('http:\/\/docs.mathjax.org/en/v2.7-latest/tex.html#supported-latex-commands', '_blank');">Команды MathJax</button>
+                    <button onclick="window.open('http:\/\/www.ccas.ru/voron/download/books/tex/klimenko96sprav.pdf', '_blank');">Справка по LaTeX</button>
+                    <div></div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+	<script language="javascript">
+        window.addEventListener("load", function(event) {
+            init();
+        });
+    </script>
+</body>
+</html>
