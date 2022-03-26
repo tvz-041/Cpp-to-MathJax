@@ -155,8 +155,8 @@ function initListeners()
             directConvertingButton.innerText = "Редактор кода";
 
             lineNumbersCheckBox.parentNode.style.display = "none";
-            for (let i = StyleType.Background + 1; i < StyleWidgets.length; ++i) {
-                StyleWidgets[i].div.classList.add("disabled");
+            for (let i = StyleType.Background + 1; i < Palette.styleWidgets.length; ++i) {
+                Palette.styleWidgets[i].div.classList.add("disabled");
             }
 
             MathJaxConverter.data.sourceCodeFromPreviousSwitch = sourceCodeEditor.value;
@@ -170,7 +170,7 @@ function initListeners()
 
             if (enablePaletteCheckBox.checked) {
                 enablePaletteCheckBox.checked = false;
-                togglePalette();
+                Palette.toggle();
             }
         } else {
             CurrentEditMode = EditMode.Default;
@@ -181,8 +181,8 @@ function initListeners()
             buttonsContainer.style.gridTemplateColumns = "repeat(3, auto) 1fr auto";
 
             lineNumbersCheckBox.parentNode.style.display = "block";
-            for (let i = StyleType.Background + 1; i < StyleWidgets.length; ++i) {
-                StyleWidgets[i].div.classList.remove("disabled");
+            for (let i = StyleType.Background + 1; i < Palette.styleWidgets.length; ++i) {
+                Palette.styleWidgets[i].div.classList.remove("disabled");
             }
 
             MathJaxConverter.data.convertedCodeFromPreviousSwitch = sourceCodeEditor.value;
