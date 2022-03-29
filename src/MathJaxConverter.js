@@ -71,7 +71,7 @@ const MathJaxConverter = {
     
                 this.data.lastConvertedCode += mathjaxEquation;
             });
-        } else {
+        } else { //CurrentEditMode == EditMode.Default
             if (this.data.convertedCodeFromPreviousSwitch) {
                 if (this.data.eraseConvertedCodeFromPreviousSwitch) {
                     this.data.convertedCodeFromPreviousSwitch = null;

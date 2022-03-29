@@ -17,6 +17,9 @@ const ServiceSymbols = {
     Whitespaces: [
         ' ', '\t'
     ],
+    TexSpecialSymbols: [
+        '_'
+    ],
     All: [],
     AllExceptParenthesis: [],
     AllExceptQuotes: [],
@@ -33,21 +36,25 @@ const ServiceSymbols = {
         Array.prototype.push.apply(this.All, this.TwoSymbolOperators);
         Array.prototype.push.apply(this.All, this.Quotes);
         Array.prototype.push.apply(this.All, this.Whitespaces);
+        Array.prototype.push.apply(this.All, this.TexSpecialSymbols);
 
         Array.prototype.push.apply(this.AllExceptParenthesis, this.OneSymbolOperators);
         Array.prototype.push.apply(this.AllExceptParenthesis, this.TwoSymbolOperators);
         Array.prototype.push.apply(this.AllExceptParenthesis, this.Quotes);
         Array.prototype.push.apply(this.AllExceptParenthesis, this.Whitespaces);
+        Array.prototype.push.apply(this.AllExceptParenthesis, this.TexSpecialSymbols);
 
         Array.prototype.push.apply(this.AllExceptQuotes, this.Parenthesis);
         Array.prototype.push.apply(this.AllExceptQuotes, this.OneSymbolOperators);
         Array.prototype.push.apply(this.AllExceptQuotes, this.TwoSymbolOperators);
         Array.prototype.push.apply(this.AllExceptQuotes, this.Whitespaces);
+        Array.prototype.push.apply(this.AllExceptQuotes, this.TexSpecialSymbols);
 
         Array.prototype.push.apply(this.AllExceptWhitespaces, this.Parenthesis);
         Array.prototype.push.apply(this.AllExceptWhitespaces, this.OneSymbolOperators);
         Array.prototype.push.apply(this.AllExceptWhitespaces, this.TwoSymbolOperators);
         Array.prototype.push.apply(this.AllExceptWhitespaces, this.Quotes);
+        Array.prototype.push.apply(this.AllExceptWhitespaces, this.TexSpecialSymbols);
 
         this.RegExps.AllExceptQuotes = new RegExp(
             "(\t| +|" + regexPatternWithEscapedSymbols(this.AllExceptQuotes) + ")"
