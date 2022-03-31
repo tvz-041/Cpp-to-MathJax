@@ -96,7 +96,7 @@ const Palette = {
             return this.styleWidgets[StyleType.Default].style;
         }
 
-        if (ServiceSymbols.Quotes.includes(sourceCodeElement[0])) {
+        if (sourceCodeElement[0] == '\"' || sourceCodeElement[0] == '\'') {
             return this.styleWidgets[StyleType.String].style;
         } else if (sourceCodeElement.startsWith("//")){
             return this.styleWidgets[StyleType.Comment].style;

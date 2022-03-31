@@ -137,19 +137,23 @@ const MathJaxConverter = {
     },
     
     convertElement: function(sourceCodeRowElement) {
+        let mathjaxElement;
+
         if (sourceCodeRowElement == "\t") {
-            return "\\ \\ \\ \\ ";
+            mathjaxElement = "\\ \\ \\ \\ ";
         } else if (sourceCodeRowElement.match(/^ +$/)) {
-            return " " + new String("\\ ").repeat(sourceCodeRowElement.length);
+            mathjaxElement = " " + "\\ ".repeat(sourceCodeRowElement.length);
         } else {
             let style = Palette.sourceCodeElementStyle(sourceCodeRowElement);
-            let mathjaxElement = sourceCodeRowElement.replaceAll(/(\{|\})/g, "\\$1").replaceAll(
-                ServiceSymbols.RegExps.AllExceptWhitespaces, "\\text{$1}");
+            mathjaxElement = sourceCodeRowElement.replaceAll(/(\{|\})/g, "\\$1").replaceAll(
+                ServiceSymbols.RegExps.AllExceptWhitespacesAndSingleQuotes, "\\text{$1}");
     
             if (style == Palette.styleWidgets[StyleType.Comment].style || style == Palette.styleWidgets[StyleType.String].style) {
                 mathjaxElement = mathjaxElement.replaceAll(/ +/g, function(match) {
-                    return " " + new String("\\ ").repeat(match.length);
+                    return " " + "\\ ".repeat(match.length);
                 });
+
+                mathjaxElement = mathjaxElement.replaceAll('\'', "\\unicode\[Consolas\]\{x27\}");
             }
     
             if (enablePaletteCheckBox.checked) {
@@ -157,55 +161,68 @@ const MathJaxConverter = {
                     mathjaxElement = this.wrappedCode(mathjaxElement, "color", style.color);
                 }
             }
-    
-            return mathjaxElement;
         }
+
+        return mathjaxElement;
     },
     
     sourceCodeRowElements: function(sourceCodeRow) {
         let elements = [];
         let elementsSequence = "";
-        let isString = false;
+        let isProcessString = false;
         let stringQuotationMark = "";
+        let currentChar;
     
         for (let i = 0; i < sourceCodeRow.length; ++i) {
-            if (!isString && sourceCodeRow[i] == '/' && (i + 1) < sourceCodeRow.length && sourceCodeRow[i + 1] == '/') {
+            currentChar = sourceCodeRow[i];
+            
+            if (!isProcessString && currentChar == '/' && (i + 1) < sourceCodeRow.length && sourceCodeRow[i + 1] == '/') {
+                //comment
                 if (elementsSequence.length > 0) {
                     elements.push.apply(elements, elementsSequence.split(ServiceSymbols.RegExps.AllExceptQuotes).filter(Boolean));
                     elementsSequence = "";
                 }
                 elements.push(sourceCodeRow.substring(i));
                 i = sourceCodeRow.length;
-            } else if (sourceCodeRow[i] == '\'' || sourceCodeRow[i] == '\"') {
-                if (isString) {
-                    elementsSequence += sourceCodeRow[i];
+            } else if (ServiceSymbols.SingleQuotes.includes(currentChar) || ServiceSymbols.DoubleQuotes.includes(currentChar)) {
+                if (ServiceSymbols.DoubleQuotes.includes(currentChar)) {
+                    currentChar = '\"';
+                } else {
+                    currentChar = '\'';
+                }
+
+                //possible begin/end of the string
+                if (isProcessString) {
+                    elementsSequence += currentChar;
     
-                    if (sourceCodeRow[i] == stringQuotationMark) {
-                        isString = false;
+                    if (currentChar == stringQuotationMark) {
+                        //end of the string
+                        isProcessString = false;
                         elements.push(elementsSequence);
                         elementsSequence = "";
                     }
                 } else {
+                    //begin of the string
                     if (elementsSequence.length > 0) {
                         elements.push.apply(elements, elementsSequence.split(ServiceSymbols.RegExps.AllExceptQuotes).filter(Boolean));
                     }
     
-                    isString = true;
-                    stringQuotationMark = sourceCodeRow[i];
+                    isProcessString = true;
+                    stringQuotationMark = currentChar;
                     elementsSequence = stringQuotationMark;
                 }
             } else {
-                elementsSequence += sourceCodeRow[i];
+                elementsSequence += currentChar;
     
-                if (sourceCodeRow[i] == '\\') {
+                if (currentChar == '\\') {
                     i++;
-                    elementsSequence += sourceCodeRow[i];
+                    elementsSequence += currentChar;
                 }
             }
         }
     
         if (elementsSequence.length > 0) {
-            if (isString) {
+            if (isProcessString) {
                 elements.push(elementsSequence);
             } else {
                 elements.push.apply(elements, elementsSequence.split(ServiceSymbols.RegExps.AllExceptQuotes).filter(Boolean));
