@@ -172,6 +172,8 @@ const MathJaxConverter = {
         let isProcessString = false;
         let stringQuotationMark = "";
         let currentChar;
+
+        sourceCodeRow = sourceCodeRow.replaceAll('\∗', '\*');
     
         for (let i = 0; i < sourceCodeRow.length; ++i) {
             currentChar = sourceCodeRow[i];
