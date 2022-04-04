@@ -60,7 +60,7 @@ const MathJaxConverter = {
                     }
                     
                     if (useSmallCommandCheckBox.checked && !new RegExp(/^.*\\small[^\}]/).test(mathjaxEquation)) {
-                        mathjaxEquation = "\\small" + mathjaxEquation;
+                        mathjaxEquation = this.wrappedCode(mathjaxEquation, "small");
                     }
                 }
     
@@ -118,7 +118,7 @@ const MathJaxConverter = {
             }
     
             if (useSmallCommandCheckBox.checked) {
-                this.data.lastConvertedCode = "\\small " + this.data.lastConvertedCode;
+                this.data.lastConvertedCode = this.wrappedCode(this.data.lastConvertedCode, "small");
             }
     
             this.data.lastConvertedCode = "\\(" + this.data.lastConvertedCode + "\\)";
