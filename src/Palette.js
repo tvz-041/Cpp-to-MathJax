@@ -73,45 +73,65 @@ const Palette = {
         MathJaxConverter.render();
     },
 
+    style: function(styleType) {
+        return this.styleWidgets[styleType].style;
+    },
+
+    color: function(styleType) {
+        return this.style(styleType).color;
+    },
+
+    defaultStyle: function() {
+        return this.style(StyleType.Default);
+    },
+
+    defaultColor: function() {
+        return this.color(StyleType.Default);
+    },
+
+    backgroundColor: function() {
+        return this.color(StyleType.Background);
+    },
+
     copyColorsToClipboard: function() {
         let _this = this;
         onActionButtonActivated(document.getElementById("copyPaletteColorsButton"), "Скопировано!", function() {
             let spaces = ""; //"                ";
             let colors = 
-                spaces + '"' + _this.styleWidgets[StyleType.Default].style.color    + '", //По умолчанию\n' +
-                spaces + '"' + _this.styleWidgets[StyleType.Background].style.color + '", //Фон\n' +
-                spaces + '"' + _this.styleWidgets[StyleType.String].style.color     + '", //Строки\n' +
-                spaces + '"' + _this.styleWidgets[StyleType.Comment].style.color    + '", //Комментарии\n' +
-                spaces + '"' + _this.styleWidgets[StyleType.Number].style.color     + '", //Числа\n' +
-                spaces + '"' + _this.styleWidgets[StyleType.Keyword].style.color    + '", //Ключевые слова\n' +
-                spaces + '"' + _this.styleWidgets[StyleType.Type].style.color       + '", //Типы\n' +
-                spaces + '"' + _this.styleWidgets[StyleType.Function].style.color   + '", //Функции\n' +
-                spaces + '"' + _this.styleWidgets[StyleType.Variable].style.color   + '", //Переменные';
+                spaces + '"' + _this.color(StyleType.Default)   + '", //По умолчанию\n' +
+                spaces + '"' + _this.color(StyleType.Background) + '", //Фон\n' +
+                spaces + '"' + _this.color(StyleType.String)     + '", //Строки\n' +
+                spaces + '"' + _this.color(StyleType.Comment)    + '", //Комментарии\n' +
+                spaces + '"' + _this.color(StyleType.Number)     + '", //Числа\n' +
+                spaces + '"' + _this.color(StyleType.Keyword)    + '", //Ключевые слова\n' +
+                spaces + '"' + _this.color(StyleType.Type)       + '", //Типы\n' +
+                spaces + '"' + _this.color(StyleType.Function)   + '", //Функции\n' +
+                spaces + '"' + _this.color(StyleType.Variable)   + '", //Переменные';
             navigator.clipboard.writeText(colors);
         });
     },
 
     sourceCodeElementStyle: function(sourceCodeElement) {
         if (sourceCodeElement.length == 0) {
-            return this.styleWidgets[StyleType.Default].style;
+            return this.defaultStyle();
         }
 
         if (sourceCodeElement[0] == '\"' || sourceCodeElement[0] == '\'') {
-            return this.styleWidgets[StyleType.String].style;
+            return this.style(StyleType.String);
         } else if (sourceCodeElement.startsWith("//")){
-            return this.styleWidgets[StyleType.Comment].style;
+            return this.style(StyleType.Comment);
         } else if (sourceCodeElement.match(/^[0-9\.]+f?$/)){
-            return this.styleWidgets[StyleType.Number].style;
+            return this.style(StyleType.Number);
         } else if (DefinedValues.keywords.includes(sourceCodeElement)) {
-            return this.styleWidgets[StyleType.Keyword].style;
+            return this.style(StyleType.Keyword);
         } else if (DefinedValues.types.includes(sourceCodeElement)) {
-            return this.styleWidgets[StyleType.Type].style;
+            return this.style(StyleType.Type);
         } else if (DefinedValues.functions.includes(sourceCodeElement)) {
-            return this.styleWidgets[StyleType.Function].style;
+            return this.style(StyleType.Function);
         } else if (DefinedValues.variables.includes(sourceCodeElement)) {
-            return this.styleWidgets[StyleType.Variable].style;
+            return this.style(StyleType.Variable);
         }
         
-        return this.styleWidgets[StyleType.Default].style;
+        return this.defaultStyle();
     }
 };

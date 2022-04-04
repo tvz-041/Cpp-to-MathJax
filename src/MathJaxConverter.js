@@ -13,7 +13,7 @@ const MathJaxConverter = {
         this.data.previewDivContainer = document.getElementById('mathjaxPreviewContainer');
     },
     render: function() {
-        this.data.previewDivContainer.style.backgroundColor = Palette.styleWidgets[StyleType.Background].style.color;
+        this.data.previewDivContainer.style.backgroundColor = Palette.backgroundColor();
         this.data.previewDiv.innerText = this.convert(sourceCodeEditor.value);
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.previewDiv]);
     },
@@ -21,8 +21,7 @@ const MathJaxConverter = {
         let code = "";
         if (copyHtmlCodeCheckBox.checked) {
             code = '<table border="0" cellpadding="0" cellspacing="0" style="width:100%">' + 
-                '\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style="background-color:' + 
-                Palette.styleWidgets[StyleType.Background].style.color + '">';
+                '\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style="background-color:' + Palette.backgroundColor() + '">';
             let mathjaxCodeLines = this.data.lastConvertedCode.split('\n').filter(Boolean);
             if (mathjaxCodeLines.length) {
                 code += escapeHtml(mathjaxCodeLines[0]);
@@ -53,7 +52,7 @@ const MathJaxConverter = {
                     }
     
                     if (enablePaletteCheckBox.checked) {
-                        mathjaxEquation = this.wrappedCode(mathjaxEquation, "color", Palette.styleWidgets[StyleType.Default].style.color);
+                        mathjaxEquation = this.wrappedCode(mathjaxEquation, "color", Palette.defaultColor());
                     }
     
                     if (monospaceFontCheckBox.checked && !new RegExp(/^.*\\tt[^\}]/).test(mathjaxEquation)) {
@@ -111,11 +110,7 @@ const MathJaxConverter = {
             }
     
             if (enablePaletteCheckBox.checked) {
-                this.data.lastConvertedCode = this.wrappedCode(
-                    this.data.lastConvertedCode, 
-                    "color", 
-                    Palette.styleWidgets[StyleType.Default].style.color
-                );
+                this.data.lastConvertedCode = this.wrappedCode(this.data.lastConvertedCode, "color", Palette.defaultColor());
             }
     
             if (monospaceFontCheckBox.checked && !lineNumbersCheckBox.checked) {
@@ -148,7 +143,7 @@ const MathJaxConverter = {
             mathjaxElement = sourceCodeRowElement.replaceAll(/(\{|\})/g, "\\$1").replaceAll(
                 ServiceSymbols.RegExps.AllExceptWhitespacesAndSingleQuotes, "\\text{$1}");
     
-            if (style == Palette.styleWidgets[StyleType.Comment].style || style == Palette.styleWidgets[StyleType.String].style) {
+            if (style == Palette.style(StyleType.Comment) || style == Palette.style(StyleType.String)) {
                 mathjaxElement = mathjaxElement.replaceAll(/ +/g, function(match) {
                     return " " + "\\ ".repeat(match.length);
                 });
@@ -157,7 +152,7 @@ const MathJaxConverter = {
             }
     
             if (enablePaletteCheckBox.checked) {
-                if (style.color != Palette.styleWidgets[StyleType.Default].style.color) {
+                if (style.color != Palette.defaultColor()) {
                     mathjaxElement = this.wrappedCode(mathjaxElement, "color", style.color);
                 }
             }
