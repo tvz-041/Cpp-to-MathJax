@@ -95,6 +95,8 @@ const MathJaxConverter = {
                     elements.forEach(sourceCodeRowElement => {
                         this.data.lastConvertedCode += this.convertElement(sourceCodeRowElement);
                     });
+                } else {
+                    this.data.lastConvertedCode += "\\"; //needed to create an empty line in MathJax (with code below "\\ \\\\")
                 }
     
                 if (rowNumber < sourceCodeRowsCount) {
