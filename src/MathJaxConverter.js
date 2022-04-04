@@ -51,7 +51,7 @@ const MathJaxConverter = {
                         hasParenthesis = false;
                     }
     
-                    if (enablePaletteCheckBox.checked) {
+                    if (enablePaletteCheckBox.checked && (Palette.defaultColor() != "#000000FF" || Palette.backgroundColor() != "#FFFFFFFF")) {
                         mathjaxEquation = this.wrappedCode(mathjaxEquation, "color", Palette.defaultColor());
                     }
     
@@ -109,7 +109,7 @@ const MathJaxConverter = {
                 this.data.lastConvertedCode += "\\end{array}";
             }
     
-            if (enablePaletteCheckBox.checked) {
+            if (enablePaletteCheckBox.checked && (Palette.defaultColor() != "#000000FF" || Palette.backgroundColor() != "#FFFFFFFF")) {
                 this.data.lastConvertedCode = this.wrappedCode(this.data.lastConvertedCode, "color", Palette.defaultColor());
             }
     
