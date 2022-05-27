@@ -10,6 +10,7 @@ var autoRenderCheckBox = null;
 var inlineMathJaxCodeCheckBox = null;
 var copyHtmlCodeCheckBox = null;
 
+var autoAddVariablesCheckBox = null;
 var useSmallCommandCheckBox = null;
 var monospaceFontCheckBox = null;
 var lineNumbersCheckBox = null;
@@ -30,6 +31,7 @@ function init()
     inlineMathJaxCodeCheckBox = document.getElementById('inlineMathJaxCodeCheckBox');
     copyHtmlCodeCheckBox = document.getElementById('copyHtmlCodeCheckBox');
 
+    autoAddVariablesCheckBox = document.getElementById("autoAddVariablesCheckBox");
     useSmallCommandCheckBox = document.getElementById("useSmallCommandCheckBox");
     monospaceFontCheckBox = document.getElementById("monospaceFontCheckBox");
     lineNumbersCheckBox = document.getElementById("lineNumbersCheckBox");

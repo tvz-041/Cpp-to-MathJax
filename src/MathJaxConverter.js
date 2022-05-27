@@ -152,7 +152,7 @@ const MathJaxConverter = {
         } else if (sourceCodeRowElement.match(/^ +$/)) {
             mathjaxElement = " " + "\\ ".repeat(sourceCodeRowElement.length);
         } else {
-            let style = Palette.sourceCodeElementStyle(sourceCodeRowElement);
+            let style = Palette.sourceCodeElementStyle(sourceCodeRowElement, autoAddVariablesCheckBox.checked);
             mathjaxElement = sourceCodeRowElement.
                 replaceAll(ServiceSymbols.RegExps.TexSpecialSymbols, "\\$1").
                 replaceAll(ServiceSymbols.RegExps.AllExceptWhitespacesAndSingleQuotes, "\\text{$1}");

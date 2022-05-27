@@ -42,7 +42,8 @@
             <div style="display: grid; grid-template-columns: repeat(3, auto) 1fr auto; grid-gap: 10px;">
                 <button id="switchBetweenSourceAndKeywordEditorsButton">Редактор зарезервированных слов</button>
                 <button id="directConvertingButton">Режим прямого преобразования кода</button>
-                <div id="directEditorOptions" style="display: grid; grid-template-columns: repeat(3, auto) 1fr auto; grid-gap: 10px;  margin-top: 2px;">
+                <div id="directEditorOptions" style="display: grid; grid-template-columns: repeat(4, auto) 1fr auto; grid-gap: 10px;  margin-top: 2px;">
+                    <label><input id="autoAddVariablesCheckBox" type="checkbox" onchange="MathJaxConverter.render();" checked>Авто-добавление переменных</label>
                     <label><input id="useSmallCommandCheckBox" type="checkbox" onchange="MathJaxConverter.render();" checked>Добавить команду small</label>
                     <label><input id="monospaceFontCheckBox" type="checkbox" onchange="MathJaxConverter.render();" checked>Моноширинный шрифт</label>
                     <label><input id="lineNumbersCheckBox" type="checkbox" onchange="MathJaxConverter.render();" checked>Нумерация строк</label>

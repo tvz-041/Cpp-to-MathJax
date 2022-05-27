@@ -111,7 +111,7 @@ const Palette = {
         });
     },
 
-    sourceCodeElementStyle: function(sourceCodeElement) {
+    sourceCodeElementStyle: function(sourceCodeElement, autoAddVariables) {
         if (sourceCodeElement.length == 0) {
             return this.defaultStyle();
         }
@@ -130,6 +130,10 @@ const Palette = {
         } else if (DefinedValues.functions.includes(sourceCodeElement)) {
             return this.style(StyleType.Function);
         } else if (DefinedValues.variables.includes(sourceCodeElement)) {
+            return this.style(StyleType.Variable);
+        } else if (autoAddVariables && sourceCodeElement.match(/^[a-zA-Z_][[a-zA-Z_0-9]*$/)) {
+            DefinedValues.variables.push(sourceCodeElement);
+            keywordsEditor.variables.value += sourceCodeElement + "\n";
             return this.style(StyleType.Variable);
         }
         
