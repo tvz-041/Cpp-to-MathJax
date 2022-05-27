@@ -24,17 +24,36 @@ function regexWithEscapedSymbols(regexPartsList, escapeSequence = "\\")
     return new RegExp(regexPatternWithEscapedSymbols(regexPartsList, escapeSequence));
 }
 
+function negativeRegexWithEscapedSymbols(regexPartsList, escapeSequence = "\\")
+{
+    return new RegExp(negativeRegexPatternWithEscapedSymbols(regexPartsList, escapeSequence));
+}
+
 function regexPatternWithEscapedSymbols(regexPartsList, escapeSequence = "\\")
 {
     let pattern = "";
     for (let i = 0; i < regexPartsList.length; i++) {
         for (let j = 0; j < regexPartsList[i].length; j++) {
-            pattern += escapeSequence + regexPartsList[i][j];
+            pattern += (regexPartsList[i][j] >= 'a' && regexPartsList[i][j] <= 'z' ? '' : escapeSequence) + regexPartsList[i][j];
         }
 
         if (i < regexPartsList.length - 1) {
             pattern += '|';
         }
+    }
+    return pattern;
+}
+
+function negativeRegexPatternWithEscapedSymbols(regexPartsList, escapeSequence = "\\")
+{
+    let pattern = "";
+    for (let i = 0; i < regexPartsList.length; i++) {
+        pattern += "(?!";
+        for (let j = 0; j < regexPartsList[i].length; j++) {
+            pattern += escapeSequence + regexPartsList[i][j];
+        }
+
+        pattern += ')';
     }
     return pattern;
 }

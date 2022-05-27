@@ -142,8 +142,9 @@ const MathJaxConverter = {
             mathjaxElement = " " + "\\ ".repeat(sourceCodeRowElement.length);
         } else {
             let style = Palette.sourceCodeElementStyle(sourceCodeRowElement);
-            mathjaxElement = sourceCodeRowElement.replaceAll(/(\{|\})/g, "\\$1").replaceAll(
-                ServiceSymbols.RegExps.AllExceptWhitespacesAndSingleQuotes, "\\text{$1}");
+            mathjaxElement = sourceCodeRowElement.
+                replaceAll(ServiceSymbols.RegExps.TexSpecialSymbols, "\\$1").
+                replaceAll(ServiceSymbols.RegExps.AllExceptWhitespacesAndSingleQuotes, "\\text{$1}");
     
             if (style == Palette.style(StyleType.Comment) || style == Palette.style(StyleType.String)) {
                 mathjaxElement = mathjaxElement.replaceAll(/ +/g, function(match) {
@@ -171,6 +172,15 @@ const MathJaxConverter = {
         let currentChar;
 
         sourceCodeRow = sourceCodeRow.replaceAll('\∗', '\*');
+
+        let preprocessorDirectiveRegExp = new RegExp(/^((?:\t| )*)(\#[^ ]+)( )*(.*)$/);
+        let preprocessorDirectiveParseResult = preprocessorDirectiveRegExp.exec(sourceCodeRow);
+        if (preprocessorDirectiveParseResult) {
+            preprocessorDirectiveParseResult.splice(0, 1);
+            preprocessorDirectiveParseResult = preprocessorDirectiveParseResult.filter(Boolean);
+            elements.push(...preprocessorDirectiveParseResult);
+            return elements;
+        }
     
         for (let i = 0; i < sourceCodeRow.length; ++i) {
             currentChar = sourceCodeRow[i];

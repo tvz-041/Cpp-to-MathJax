@@ -116,7 +116,8 @@ const Palette = {
             return this.defaultStyle();
         }
 
-        if (sourceCodeElement[0] == '\"' || sourceCodeElement[0] == '\'') {
+        if (sourceCodeElement[0] == '\"' || sourceCodeElement[0] == '\'' || 
+            (sourceCodeElement[0] == '\<' && sourceCodeElement.length > 2)) {   //for include <>
             return this.style(StyleType.String);
         } else if (sourceCodeElement.startsWith("//")){
             return this.style(StyleType.Comment);
