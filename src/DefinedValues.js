@@ -29,6 +29,9 @@ keywords:
 "catch",
 "using",
 "namespace",
+"for",
+"while",
+"do",
 
 "true",
 "false",
@@ -64,7 +67,19 @@ functions:
 "scanf",
 "scanf_s",
 "printf",
-"printf_s"
+"printf_s",
+"round",
+"floor",
+"ceil",
+"abs",
+"fabs",
+"pow",
+"sqrt",
+"exp",
+"log",
+"sin",
+"cos",
+"tan",
 ],
 
 variables:
