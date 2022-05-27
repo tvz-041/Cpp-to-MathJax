@@ -1,6 +1,8 @@
 const MathJaxConverter = {
     data: {
+        /**@type {HTMLElement} */
         previewDiv: null,
+        /**@type {HTMLElement} */
         previewDivContainer: null,
         lastConvertedCode: "",
         sourceCodeFromPreviousSwitch: "",
@@ -37,6 +39,15 @@ const MathJaxConverter = {
 
         onActionButtonActivated(document.getElementById("copyMathjaxCodeButton"), "Скопировано!", function() {
             navigator.clipboard.writeText(code);
+        });
+    },
+    copyCodeImageToClipboard: function() {
+        html2canvas(this.data.previewDiv.children[1], {
+            scale: 4
+        }).then(canvas => {
+            canvas.toBlob(function(blob) {
+                saveAs(blob, "MathJax.png"); 
+            });
         });
     },
     convert: function(sourceCodeString) {

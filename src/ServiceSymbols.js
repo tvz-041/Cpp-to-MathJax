@@ -108,7 +108,5 @@ const ServiceSymbols = {
                 regexPatternWithEscapedSymbols(this.AllExceptWhitespacesAndSingleQuotes) + 
             ")",
         'g');
-
-        console.log(this.RegExps.AllExceptWhitespacesAndSingleQuotes);
     }
 };
