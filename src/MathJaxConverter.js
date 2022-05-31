@@ -103,9 +103,15 @@ const MathJaxConverter = {
     
                 if (sourceCodeRow.length > 0) {
                     let elements = this.sourceCodeRowElements(sourceCodeRow);
+                    let convertedRow = "";
                     elements.forEach(sourceCodeRowElement => {
-                        this.data.lastConvertedCode += this.convertElement(sourceCodeRowElement);
+                        convertedRow += this.convertElement(sourceCodeRowElement);
                     });
+                    let textRepeatRegExp = new RegExp(/\\text\{((?:\\.|[^\}])+)\}\\text\{((?:\\.|[^\}])+)\}/);
+                    while (textRepeatRegExp.test(convertedRow)) {
+                        convertedRow = convertedRow.replace(textRepeatRegExp, "\\text{$1$2}");
+                    }
+                    this.data.lastConvertedCode += convertedRow;
                 } else {
                     this.data.lastConvertedCode += "\\"; //needed to create an empty line in MathJax (with code below "\\ \\\\")
                 }
