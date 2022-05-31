@@ -236,7 +236,7 @@ const MathJaxConverter = {
     
                 if (currentChar == '\\') {
                     i++;
-                    elementsSequence += currentChar;
+                    elementsSequence += sourceCodeRow[i];
                 }
             }
         }

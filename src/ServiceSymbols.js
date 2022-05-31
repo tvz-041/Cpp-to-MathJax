@@ -1,5 +1,4 @@
 const ServiceSymbols = {
-    Backslash: "\\\\",
     OneSymbolOperators: [
         '!', '<', '>', '+', '-', '*', '/', '%', '=', 
         '&', '|', '~', '^', ',', ';', ':'
@@ -82,31 +81,29 @@ const ServiceSymbols = {
             ")"
         );
 
-        this.RegExps.AllExceptWhitespaces = new RegExp(
-            "(" +
-                "(" + 
-                    this.Backslash + 
-                    "(" + 
-                        this.Backslash + "|" + 
-                        regexPatternWithEscapedSymbols(this.AllExceptWhitespaces) + 
-                    ")" + 
-                ")|" + 
-                regexPatternWithEscapedSymbols(this.AllExceptWhitespaces) + 
-            ")",
-        'g');
+        this.RegExps.AllExceptWhitespaces = 
+            regExpForSetExceptWhitespaces__(this.AllExceptWhitespaces);
 
 
-        this.RegExps.AllExceptWhitespacesAndSingleQuotes = new RegExp(
-            "(" +
-                "(" + 
-                    this.Backslash + 
+        this.RegExps.AllExceptWhitespacesAndSingleQuotes = 
+            regExpForSetExceptWhitespaces__(this.AllExceptWhitespacesAndSingleQuotes);
+
+        function regExpForSetExceptWhitespaces__(set)
+        {
+            return new RegExp(
+                "(" +
                     "(" + 
-                        this.Backslash + "|" + 
-                        regexPatternWithEscapedSymbols(this.AllExceptWhitespacesAndSingleQuotes) + 
-                    ")" + 
-                ")|" + 
-                regexPatternWithEscapedSymbols(this.AllExceptWhitespacesAndSingleQuotes) + 
-            ")",
-        'g');
+                        "\\\\" + 
+                        "(" + 
+                            "\\\\|" + 
+                            "\\d|" + 
+                            "\\w|" + 
+                            regexPatternWithEscapedSymbols(set) + 
+                        ")" + 
+                    ")|" + 
+                    regexPatternWithEscapedSymbols(set) + 
+                ")",
+            'g');
+        }
     }
 };

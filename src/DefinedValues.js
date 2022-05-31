@@ -1,5 +1,5 @@
 const DefinedValues = {
-code: "#include <cstdio>\n#include <iostream>\n\nint main()\n{\n    int number = 0 + (5 - 6) * 7 / 8 % 9; //Some \"comment\";\n    int arr[10] = {0};\n    \n    if (true) {\n        std::cout << \"\\\"test\\\" 'str//ing'\";\n    } else {\n        printf(\"\\\"test\\\" 'str//ing'\");\n    }\n    \n    float floatingNumber = 3.14f;\n    return 0;\n}",
+code: "#include <cstdio>\n#include <iostream>\n\nint main()\n{\n    int number = 0 + (5 - 6) * 7 / 8 % 9; //Some \"comment\";\n    int arr[10] = {0};\n    \n    if (true) {\n        std::cout << \"\\\"test\\\" 'str//ing'\\0\";\n    } else {\n        printf(\"\\\"test\\\" 'str//ing'\\n\");\n    }\n    \n    float floatingNumber = 3.14f;\n    return 0;\n}",
 colors:
 [
 "#000000FF", //По умолчанию
