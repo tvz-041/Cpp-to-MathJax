@@ -34,7 +34,7 @@ const MathJaxConverter = {
             }
             code += "</td>\n\t\t</tr>\n\t</tbody>\n</table>";
         } else {
-            code = inlineMathJaxCodeCheckBox.checked ? this.data.lastConvertedCode.replaceAll('\n', '') : this.data.lastConvertedCode;
+            code = inlineMathJaxCodeCheckBox.checked ? this.data.lastConvertedCode.replaceAll('\n', ' ') : this.data.lastConvertedCode;
         }
 
         onActionButtonActivated(document.getElementById("copyMathjaxCodeButton"), "Скопировано!", function() {
