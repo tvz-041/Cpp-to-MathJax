@@ -95,9 +95,8 @@ const ServiceSymbols = {
                     "(" + 
                         "\\\\" + 
                         "(" + 
-                            "\\\\|" + 
-                            "\\d|" + 
-                            "\\w|" + 
+                            "\\\\|" +
+                            "[a-zA-Z0-9]|" + 
                             regexPatternWithEscapedSymbols(set) + 
                         ")" + 
                     ")|" + 
