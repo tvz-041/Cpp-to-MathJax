@@ -14,6 +14,7 @@ var autoAddVariablesCheckBox = null;
 var useSmallCommandCheckBox = null;
 var monospaceFontCheckBox = null;
 var lineNumbersCheckBox = null;
+var splitCodeByRowsCheckBox = null;
 
 var sourceCodeEditor = null;
 
@@ -35,6 +36,7 @@ function init()
     useSmallCommandCheckBox = document.getElementById("useSmallCommandCheckBox");
     monospaceFontCheckBox = document.getElementById("monospaceFontCheckBox");
     lineNumbersCheckBox = document.getElementById("lineNumbersCheckBox");
+    splitCodeByRowsCheckBox = document.getElementById("splitCodeByRowsCheckBox");
 
     sourceCodeEditor = document.getElementById('sourceCodeEditor');
 

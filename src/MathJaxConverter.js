@@ -54,6 +54,11 @@ const MathJaxConverter = {
         if (CurrentEditMode == EditMode.Direct) {
             this.data.lastConvertedCode = "";
             sourceCodeString.split(/(\\\((?:[^\\]|(?:\\[^\)]))*\\\))/).filter(Boolean).forEach(mathjaxEquation => {
+                if (mathjaxEquation == "" || mathjaxEquation == " " || mathjaxEquation == "\n") {
+                    this.data.lastConvertedCode += mathjaxEquation;
+                    return;
+                }
+
                 let hasParenthesis = mathjaxEquation.startsWith("\\(") && mathjaxEquation.endsWith("\\)");
                 if (useSmallCommandCheckBox.checked || monospaceFontCheckBox.checked || enablePaletteCheckBox.checked) {
     
@@ -89,21 +94,29 @@ const MathJaxConverter = {
                     this.data.eraseConvertedCodeFromPreviousSwitch = true;
                 }
             }
-            this.data.lastConvertedCode = (lineNumbersCheckBox.checked ? "\\begin{array}{r | l}" : "") + '\n';
+            let rowBegin;
+            if (splitCodeByRowsCheckBox.checked) {
+                this.data.lastConvertedCode = "";
+                rowBegin = (lineNumbersCheckBox.checked ? "\\begin{array}{r | l}" : "");
+            } else {
+                this.data.lastConvertedCode = (lineNumbersCheckBox.checked ? "\\begin{array}{r | l}" : "") + '\n';
+                rowBegin = "";
+            }
     
             let rowNumber = 1;
             let sourceCodeRows = sourceCodeString.split('\n');
             let sourceCodeRowsCount = sourceCodeRows.length;
+            let convertedRow;
             sourceCodeRows.forEach(sourceCodeRow => {
+                convertedRow = rowBegin;
                 if (lineNumbersCheckBox.checked) {
-                    this.data.lastConvertedCode += (monospaceFontCheckBox.checked ? "\\tt" : "") + 
+                    convertedRow += (monospaceFontCheckBox.checked ? "\\tt" : "") + 
                         (rowNumber < 10 ? " \\ ": " ") + rowNumber + " & " +
                         (monospaceFontCheckBox.checked ? "\\tt " : "");
                 }
     
                 if (sourceCodeRow.length > 0) {
                     let elements = this.sourceCodeRowElements(sourceCodeRow);
-                    let convertedRow = "";
                     elements.forEach(sourceCodeRowElement => {
                         convertedRow += this.convertElement(sourceCodeRowElement);
                     });
@@ -111,36 +124,49 @@ const MathJaxConverter = {
                     while (textRepeatRegExp.test(convertedRow)) {
                         convertedRow = convertedRow.replace(textRepeatRegExp, "\\text{$1$2}");
                     }
-                    this.data.lastConvertedCode += convertedRow;
                 } else {
-                    this.data.lastConvertedCode += "\\"; //needed to create an empty line in MathJax (with code below "\\ \\\\")
+                    convertedRow += "\\"; //needed to create an empty line in MathJax (with code below "\\ \\\\")
                 }
     
                 if (rowNumber < sourceCodeRowsCount) {
-                    this.data.lastConvertedCode += " \\\\";   //double backslash - a new line
+                    convertedRow += " \\\\";   //double backslash - a new line
                 }
                 ++rowNumber;
                 
-                this.data.lastConvertedCode += "\n";
+                if (splitCodeByRowsCheckBox.checked) {
+                    if (lineNumbersCheckBox.checked) {
+                        convertedRow += "\\end{array}";
+                    }
+    
+                    convertedRow = applyFormattingAndFinalize__(convertedRow);
+                }
+
+                this.data.lastConvertedCode += convertedRow + "\n";
             });
     
-            if (lineNumbersCheckBox.checked) {
-                this.data.lastConvertedCode += "\\end{array}";
+            if (!splitCodeByRowsCheckBox.checked) {
+                if (lineNumbersCheckBox.checked) {
+                    this.data.lastConvertedCode += "\\end{array}";
+                }
+
+                this.data.lastConvertedCode = applyFormattingAndFinalize__(this.data.lastConvertedCode);
             }
     
-            if (enablePaletteCheckBox.checked && (Palette.defaultColor() != "#000000FF" || Palette.backgroundColor() != "#FFFFFFFF")) {
-                this.data.lastConvertedCode = this.wrappedCode(this.data.lastConvertedCode, "color", Palette.defaultColor());
+            function applyFormattingAndFinalize__(code) {
+                if (enablePaletteCheckBox.checked && (Palette.defaultColor() != "#000000FF" || Palette.backgroundColor() != "#FFFFFFFF")) {
+                    code = MathJaxConverter.wrappedCode(code, "color", Palette.defaultColor());
+                }
+        
+                if (monospaceFontCheckBox.checked && !lineNumbersCheckBox.checked) {
+                    code = "\\tt " + code;
+                }
+        
+                if (useSmallCommandCheckBox.checked) {
+                    code = MathJaxConverter.wrappedCode(code, "small");
+                }
+
+                return ("\\(" + code + "\\)");
             }
-    
-            if (monospaceFontCheckBox.checked && !lineNumbersCheckBox.checked) {
-                this.data.lastConvertedCode = "\\tt " + this.data.lastConvertedCode;
-            }
-    
-            if (useSmallCommandCheckBox.checked) {
-                this.data.lastConvertedCode = this.wrappedCode(this.data.lastConvertedCode, "small");
-            }
-    
-            this.data.lastConvertedCode = "\\(" + this.data.lastConvertedCode + "\\)";
         }
     
         return this.data.lastConvertedCode;
