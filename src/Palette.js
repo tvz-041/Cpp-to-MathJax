@@ -111,7 +111,17 @@ const Palette = {
         });
     },
 
-    sourceCodeElementStyle: function(sourceCodeElement, autoAddVariables) {
+    /**
+     * @param {string} sourceCodeElement 
+     * @param {string | undefined} nextElement 
+     * @param {boolean} autoAddToKeywords 
+     * @returns {{
+     *  color:  string,
+     *  bold:   boolean,
+     *  italic: boolean
+     * }}
+     */
+    sourceCodeElementStyle: function(sourceCodeElement, nextElement, autoAddToKeywords) {
         if (sourceCodeElement.length == 0) {
             return this.defaultStyle();
         }
@@ -127,14 +137,29 @@ const Palette = {
             return this.style(StyleType.Keyword);
         } else if (DefinedValues.types.includes(sourceCodeElement)) {
             return this.style(StyleType.Type);
-        } else if (DefinedValues.functions.includes(sourceCodeElement)) {
-            return this.style(StyleType.Function);
-        } else if (DefinedValues.variables.includes(sourceCodeElement)) {
-            return this.style(StyleType.Variable);
-        } else if (autoAddVariables && sourceCodeElement.match(/^[a-zA-Z_][[a-zA-Z_0-9]*$/)) {
-            DefinedValues.variables.push(sourceCodeElement);
-            keywordsEditor.variables.value += sourceCodeElement + "\n";
-            return this.style(StyleType.Variable);
+        } else {
+            let inUserFunctionList = DefinedValues.functions.includes(sourceCodeElement);
+            let inUserVariableList = DefinedValues.variables.includes(sourceCodeElement);
+
+            if (inUserFunctionList != inUserVariableList) {
+                return this.style(inUserFunctionList ? StyleType.Function : StyleType.Variable);
+            } else if (inUserFunctionList) { //both are true
+                return this.style(nextElement?.startsWith('(') ? StyleType.Function : StyleType.Variable);
+            } else if (autoAddToKeywords) { //both are false
+                if (nextElement?.startsWith('(')) {
+                    if (!AutoAddedValues.functions.includes(sourceCodeElement)) {
+                        AutoAddedValues.functions.push(sourceCodeElement);
+                        keywordsEditor.autoAdded.functions.value += sourceCodeElement + "\n";
+                    }
+                    return this.style(StyleType.Function);
+                } else if (sourceCodeElement.match(/^[a-zA-Z_][[a-zA-Z_0-9]*$/)) {
+                    if (!AutoAddedValues.variables.includes(sourceCodeElement)) {
+                        AutoAddedValues.variables.push(sourceCodeElement);
+                        keywordsEditor.autoAdded.variables.value += sourceCodeElement + "\n";
+                    }
+                    return this.style(StyleType.Variable);
+                }
+            }
         }
         
         return this.defaultStyle();

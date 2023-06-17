@@ -1,3 +1,10 @@
+const AutoAddedValues = {
+    keywords:   [],
+    types:      [],
+    functions:  [],
+    variables:  []
+};
+
 const DefinedValues = {
 code: "#include <stdio.h>\n#include <iostream>\n\nint main()\n{\n    int number = 0 + (5 - 6) * 7 / 8 % 9; //Some \"comment\";\n    int arr[10] = {0};\n    \n    if (true)\n    {\n        std::cout << \"\\\"test\\\" 'str//ing'\\0\";\n    }\n    else\n    {\n        printf(\"\\\"test\\\" 'str//ing'\\n\");\n    }\n    \n    float floatingNumber = 3.14f;\n    return 0;\n}",
 colors:

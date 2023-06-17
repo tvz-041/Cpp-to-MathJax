@@ -117,8 +117,8 @@ const MathJaxConverter = {
     
                 if (sourceCodeRow.length > 0) {
                     let elements = this.sourceCodeRowElements(sourceCodeRow);
-                    elements.forEach(sourceCodeRowElement => {
-                        convertedRow += this.convertElement(sourceCodeRowElement);
+                    elements.forEach((sourceCodeRowElement, index) => {
+                        convertedRow += this.convertElement(sourceCodeRowElement, elements[index + 1]);
                     });
                     let textRepeatRegExp = new RegExp(/\\text\{((?:\\.|[^\}])+)\}\\text\{((?:\\.|[^\}])+)\}/);
                     while (textRepeatRegExp.test(convertedRow)) {
@@ -176,7 +176,7 @@ const MathJaxConverter = {
         return "\\" + wrapCommand + (commandArgument ? "{" + commandArgument + "}" : "") +"{" + mathjaxCode + "}";
     },
     
-    convertElement: function(sourceCodeRowElement) {
+    convertElement: function(sourceCodeRowElement, nextElement) {
         let mathjaxElement;
 
         if (sourceCodeRowElement == "\t") {
@@ -184,7 +184,7 @@ const MathJaxConverter = {
         } else if (sourceCodeRowElement.match(/^ +$/)) {
             mathjaxElement = " " + "\\ ".repeat(sourceCodeRowElement.length);
         } else {
-            let style = Palette.sourceCodeElementStyle(sourceCodeRowElement, autoAddVariablesCheckBox.checked);
+            let style = Palette.sourceCodeElementStyle(sourceCodeRowElement, nextElement, autoAddKeywordsCheckBox.checked);
             mathjaxElement = sourceCodeRowElement.
                 replaceAll(ServiceSymbols.RegExps.TexSpecialSymbols, "\\$1").
                 replaceAll(ServiceSymbols.RegExps.AllExceptWhitespacesAndSingleQuotes, "\\text{$1}");

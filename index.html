@@ -42,7 +42,7 @@
                 <button id="switchBetweenSourceAndKeywordEditorsButton">Редактор зарезервированных слов</button>
                 <button id="directConvertingButton">Режим прямого преобразования кода</button>
                 <div id="directEditorOptions" style="display: grid; grid-template-columns: repeat(4, auto) 1fr auto; grid-gap: 10px;  margin-top: 2px;">
-                    <label><input id="autoAddVariablesCheckBox" type="checkbox" onchange="MathJaxConverter.render();" checked>Авто-добавление переменных</label>
+                    <label><input id="autoAddKeywordsCheckBox" type="checkbox" onchange="MathJaxConverter.render();" checked>Авто-добавление переменных</label>
                     <label><input id="inlineMathJaxCodeCheckBox" type="checkbox">Однострочный код MathJax</label>
                     <label><input id="splitCodeByRowsCheckBox" type="checkbox" onchange="MathJaxConverter.render();" checked>Генерировать каждую строку в виде отдельной формулы</label>
                 </div>
@@ -74,6 +74,28 @@
                                 <div style="display: grid; grid-template-rows: 0fr 1fr;">
                                     <div style="text-align: center;">Переменные</div>
                                     <textarea id="variablesListEditor" type="text" style="vertical-align: top; border: solid 1px black;"></textarea>
+                                </div>
+                            </div>
+                            <div style="text-align: center; margin-top: 5px; border-top: solid 0px black; border-bottom: solid 1px black;">Автоматически добавленные слова:</div>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); grid-gap: 3px; height: 492px;">
+                                <div style="display: grid; grid-template-rows: 0fr 1fr;">
+                                    <div style="text-align: center;">Ключевые слова</div>
+                                    <textarea id="autoKeywordsListEditor" type="text" style="vertical-align: top; border: solid 1px black;"></textarea>
+                                </div>
+                
+                                <div style="display: grid; grid-template-rows: 0fr 1fr;">
+                                    <div style="text-align: center;">Типы</div>
+                                    <textarea id="autoTypesListEditor" type="text" style="vertical-align: top; border: solid 1px black;"></textarea>
+                                </div>
+                
+                                <div style="display: grid; grid-template-rows: 0fr 1fr;">
+                                    <div style="text-align: center;">Функции</div>
+                                    <textarea id="autoFunctionsListEditor" type="text" style="vertical-align: top; border: solid 1px black;"></textarea>
+                                </div>
+                
+                                <div style="display: grid; grid-template-rows: 0fr 1fr;">
+                                    <div style="text-align: center;">Переменные</div>
+                                    <textarea id="autoVariablesListEditor" type="text" style="vertical-align: top; border: solid 1px black;"></textarea>
                                 </div>
                             </div>
                         </div>

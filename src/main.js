@@ -10,7 +10,7 @@ var autoRenderCheckBox = null;
 var inlineMathJaxCodeCheckBox = null;
 var copyHtmlCodeCheckBox = null;
 
-var autoAddVariablesCheckBox = null;
+var autoAddKeywordsCheckBox = null;
 var useSmallCommandCheckBox = null;
 var monospaceFontCheckBox = null;
 var lineNumbersCheckBox = null;
@@ -23,7 +23,13 @@ var keywordsEditor = {
     keywords:  null,
     types:     null,
     functions: null,
-    variables: null
+    variables: null,
+    autoAdded: {
+        keywords:  null,
+        types:     null,
+        functions: null,
+        variables: null
+    }
 };
 
 function init()
@@ -32,7 +38,7 @@ function init()
     inlineMathJaxCodeCheckBox = document.getElementById('inlineMathJaxCodeCheckBox');
     copyHtmlCodeCheckBox = document.getElementById('copyHtmlCodeCheckBox');
 
-    autoAddVariablesCheckBox = document.getElementById("autoAddVariablesCheckBox");
+    autoAddKeywordsCheckBox = document.getElementById("autoAddKeywordsCheckBox");
     useSmallCommandCheckBox = document.getElementById("useSmallCommandCheckBox");
     monospaceFontCheckBox = document.getElementById("monospaceFontCheckBox");
     lineNumbersCheckBox = document.getElementById("lineNumbersCheckBox");
@@ -45,6 +51,10 @@ function init()
     keywordsEditor.types     =  document.getElementById('typesListEditor');
     keywordsEditor.functions =  document.getElementById('functionsListEditor');
     keywordsEditor.variables =  document.getElementById('variablesListEditor');
+    keywordsEditor.autoAdded.keywords  =  document.getElementById('autoKeywordsListEditor');
+    keywordsEditor.autoAdded.types     =  document.getElementById('autoTypesListEditor');
+    keywordsEditor.autoAdded.functions =  document.getElementById('autoFunctionsListEditor');
+    keywordsEditor.autoAdded.variables =  document.getElementById('autoVariablesListEditor');
 
     ServiceSymbols.init();
     Palette.init();
@@ -63,6 +73,11 @@ function initListeners()
     __initKeywordsListEditor(DefinedValues.types,     keywordsEditor.types);
     __initKeywordsListEditor(DefinedValues.functions, keywordsEditor.functions);
     __initKeywordsListEditor(DefinedValues.variables, keywordsEditor.variables);
+
+    __initKeywordsListEditor(AutoAddedValues.keywords,  keywordsEditor.autoAdded.keywords);
+    __initKeywordsListEditor(AutoAddedValues.types,     keywordsEditor.autoAdded.types);
+    __initKeywordsListEditor(AutoAddedValues.functions, keywordsEditor.autoAdded.functions);
+    __initKeywordsListEditor(AutoAddedValues.variables, keywordsEditor.autoAdded.variables);
 
     __addTextEditorListener(sourceCodeEditor, function() {
         if (this.value.includes('\t')) {
