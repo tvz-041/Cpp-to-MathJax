@@ -42,7 +42,7 @@ const MathJaxConverter = {
         });
     },
     copyCodeImageToClipboard: function() {
-        html2canvas(this.data.previewDiv.children[1], {
+        html2canvas(this.data.previewDiv, {
             scale: 4
         }).then(canvas => {
             canvas.toBlob(function(blob) {
