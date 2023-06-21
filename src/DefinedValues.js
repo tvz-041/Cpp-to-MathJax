@@ -66,6 +66,12 @@ types:
 "void",
 "std",
 "string",
+"FILE",
+"istream",
+"ostream",
+"fstream",
+"ifstream",
+"ofstream"
 ],
 
 functions:
@@ -87,14 +93,21 @@ functions:
 "sin",
 "cos",
 "tan",
+"fopen",
+"fclose",
+"fcloseall",
+"fprintf",
+"fscanf",
+"fread",
+"fwrite",
+"fputs",
+"fgets",
+"fputc",
+"fgetc",
 ],
 
 variables:
 [
-"arr",
-"number",
-"str",
-"floatingNumber",
 "cin",
 "cout",
 ]
