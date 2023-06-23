@@ -71,7 +71,20 @@ types:
 "ostream",
 "fstream",
 "ifstream",
-"ofstream"
+"ofstream",
+"int8_t",
+"uint8_t",
+"int16_t",
+"uint16_t",
+"int32_t",
+"uint32_t",
+"int64_t",
+"uint64_t",
+"clock_t",
+"size_t",
+"time_t",
+"wchar_t",
+"wint_t",
 ],
 
 functions:
