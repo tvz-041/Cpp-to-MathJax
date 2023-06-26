@@ -64,6 +64,8 @@ types:
 "long",
 "short",
 "void",
+"signed",
+"unsigned",
 "std",
 "string",
 "FILE",
