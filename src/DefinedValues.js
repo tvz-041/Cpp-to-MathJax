@@ -45,6 +45,9 @@ keywords:
 
 "#include",
 
+"new",
+"delete",
+
 // "struct",
 // "class",
 // "public",
